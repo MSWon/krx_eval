@@ -1,6 +1,7 @@
 # krx_eval
 
-## Prerequisite
+## Prerequisite 
+- If you are using Docker then you don't need to install the followings (go to Option-2 if using Docker)
 - python 3.9.16
 - [poetry (1.4.0)](https://python-poetry.org/docs/)
     ```shell
