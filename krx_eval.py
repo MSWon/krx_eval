@@ -16,7 +16,7 @@ BATCH_SIZE = 1
 DEVICE = "cuda:0"
 MAX_GENERATE_TOKENS = 1024
 
-llm = LLM(model=model_name, dtype="half")
+llm = LLM(model=model_name, dtype="half", max_model_len=MAX_GENERATE_TOKENS, gpu_memory_utilization=0.95)
 
 def get_allowed_token_ids(llm, allowed_tokens=['A','B','C','D']):
     return llm.llm_engine.tokenizer.tokenizer.convert_tokens_to_ids(allowed_tokens)
