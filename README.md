@@ -21,9 +21,18 @@
     poetry install
     ```
 
-- **Evaluate**
+- **Evaluate MCQA**
     ```shell
-    python krx_eval.py
+    python evaluate_mcqa.py google/gemma-2-9b-it
+    ```
+
+- **Evaluate Longform**
+    ```shell
+    python generate_response_and_get_bleu.py google/gemma-2-9b-it
+    ```
+
+    ```shell
+    python evaluate_longform.py gemma-2-9b-it
     ```
 
 ### Option-2 (Install with docker)
@@ -32,11 +41,24 @@
     docker build --tag krx_eval:0.1.0 .
     ```
 
-- **Evaluate**
+- **Evaluate MCQA**
     ```shell
     docker run -it --entrypoint bash -v $(pwd):$(pwd) -w $(pwd) krx_eval:0.1.0
     ```
 
     ```shell
-    python krx_eval.py
+    python evaluate_mcqa.py google/gemma-2-9b-it
+    ```
+
+- **Evaluate Longform**
+    ```shell
+    docker run -it --entrypoint bash -v $(pwd):$(pwd) -w $(pwd) krx_eval:0.1.0
+    ```
+
+    ```shell
+    python generate_response_and_get_bleu.py google/gemma-2-9b-it
+    ```
+
+    ```shell
+    python evaluate_longform.py gemma-2-9b-it
     ```
