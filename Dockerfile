@@ -18,8 +18,11 @@ RUN wget -qO - http://www.mellanox.com/downloads/ofed/RPM-GPG-KEY-Mellanox | apt
 RUN echo "deb http://linux.mellanox.com/public/repo/mlnx_ofed/24.04-0.6.6.0/debian11.3/x86_64 ./" \
     | tee /etc/apt/sources.list.d/mlnx_ofed.list
 RUN apt-get update \
-    && apt-get install -y mlnx-ofed-all \
+    && apt-get install -y mlnx-ofed-all openjdk-17-jdk \
     && rm -rf /var/lib/apt/lists/*
+
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+ENV PATH="$JAVA_HOME/bin:$PATH"
 
 RUN mkdir -p ${SETUP_PATH}
 WORKDIR ${SETUP_PATH}

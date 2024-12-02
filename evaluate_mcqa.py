@@ -10,11 +10,12 @@ from vllm import LLM, SamplingParams
 
 
 # Load the model and tokenizer
-model_name = "TwoSubPlace/krx_base_v1"
+model_name = sys.argv[1]
 data_path = Path("data")
 BATCH_SIZE = 1
-DEVICE = "cuda:0"
+DEVICE = "cuda"
 MAX_GENERATE_TOKENS = 1024
+CHOICE_CANDIDATES = ['A','B','C','D','E','F','G','H']
 
 llm = LLM(model=model_name, dtype="half", max_model_len=MAX_GENERATE_TOKENS, gpu_memory_utilization=0.95)
 
@@ -29,17 +30,9 @@ def ban_illegal_tokens(token_ids, logits, allowed_tokens):
     return logits
 
 def evaluate_model_mcqa(dataset: List[Dict[str, str]]):
-    allowed_token_ids = get_allowed_token_ids(llm, ['A','B','C','D'])
-
     sampling_cot_params = SamplingParams(
         temperature=0.0,
         max_tokens=MAX_GENERATE_TOKENS,
-    )
-
-    sampling_final_params = SamplingParams(
-        temperature=0.0,
-        max_tokens=1,
-        logits_processors=[lambda token_ids, logits: ban_illegal_tokens(token_ids, logits, allowed_token_ids)]
     )
 
     total_best_choices = []
@@ -53,6 +46,18 @@ def evaluate_model_mcqa(dataset: List[Dict[str, str]]):
         question = example["question"]
         choices = example["choices"]
         
+        num_choices = len(choices)
+        
+        choice_candidates = CHOICE_CANDIDATES[:num_choices]
+        
+        allowed_token_ids = get_allowed_token_ids(llm, choice_candidates)
+
+        sampling_final_params = SamplingParams(
+            temperature=0.0,
+            max_tokens=1,
+            logits_processors=[lambda token_ids, logits: ban_illegal_tokens(token_ids, logits, allowed_token_ids)]
+        )
+
         # Prepare the prompt with the given format
         choices_str = "\n".join(choices)
         prompt = f"다음 문제를 읽고 정답으로 가장 알맞은 것을 고르시오.\n### 질문: {question}\n### 선택지:\n{choices_str}\n### 정답:"
@@ -125,7 +130,7 @@ def evaluate_model_mcqa(dataset: List[Dict[str, str]]):
     final_results = {"accuracy": round(accuracy, 2), "details": results}
     return final_results
 
-for eval_mode in ["financial_accounting", "financial_market"]:
+for eval_mode in ["financial_market", "financial_accounting", "kmmlu_accounting", "kmmlu_accounting_hard"]:
     print(f"[EVALUATION]: {eval_mode}")
 
     # Load the dataset
