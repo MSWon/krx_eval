@@ -1,7 +1,7 @@
 # krx_eval
 
 ## Prerequisite 
-- If you are using Docker then you don't need to install the followings (go to Option-2 if using Docker)
+- If you are using Docker then you don't need to install the followings (go to Option-2 or Option-3 if using Docker)
 - python 3.9.16
 - [poetry (1.4.0)](https://python-poetry.org/docs/)
     ```shell
@@ -23,16 +23,16 @@
 
 - **Evaluate MCQA**
     ```shell
-    python evaluate_mcqa.py google/gemma-2-9b-it
+    python krx_eval/evaluate_mcqa.py google/gemma-2-9b-it
     ```
 
 - **Evaluate Longform**
     ```shell
-    python generate_response_and_get_bleu.py google/gemma-2-9b-it
+    python krx_eval/generate_response_and_get_bleu.py google/gemma-2-9b-it
     ```
 
     ```shell
-    python evaluate_longform.py gemma-2-9b-it
+    python krx_eval/evaluate_longform.py gemma-2-9b-it
     ```
 
 ### Option-2 (Install with docker)
@@ -47,7 +47,7 @@
     ```
 
     ```shell
-    python evaluate_mcqa.py google/gemma-2-9b-it
+    python krx_eval/evaluate_mcqa.py google/gemma-2-9b-it
     ```
 
 - **Evaluate Longform**
@@ -56,9 +56,38 @@
     ```
 
     ```shell
-    python generate_response_and_get_bleu.py google/gemma-2-9b-it
+    python krx_eval/generate_response_and_get_bleu.py google/gemma-2-9b-it
     ```
 
     ```shell
-    python evaluate_longform.py gemma-2-9b-it
+    python krx_eval/evaluate_longform.py gemma-2-9b-it
+    ```
+
+### Option-3 (Pull from dockerhub) (Recommended)
+- docker hub: https://hub.docker.com/r/twosubplace/krx_eval/tags
+- **Install**
+    ```shell
+    docker pull twosubplace/krx_eval:0.2.0
+    ```
+
+- **Evaluate MCQA**
+    ```shell
+    docker run -it --entrypoint bash twosubplace/krx_eval:0.2.0
+    ```
+
+    ```shell
+    python krx_eval/evaluate_mcqa.py google/gemma-2-9b-it
+    ```
+
+- **Evaluate Longform**
+    ```shell
+    docker run -it --entrypoint bash twosubplace/krx_eval:0.2.0
+    ```
+
+    ```shell
+    python krx_eval/generate_response_and_get_bleu.py google/gemma-2-9b-it
+    ```
+
+    ```shell
+    python krx_eval/evaluate_longform.py gemma-2-9b-it
     ```
