@@ -91,3 +91,18 @@
     ```shell
     python krx_eval/evaluate_longform.py gemma-2-9b-it
     ```
+
+## Docker attach
+
+```
+docker ps -a
+
+CONTAINER ID   IMAGE                            COMMAND   CREATED         STATUS         PORTS     NAMES
+9cc37bd809c2   twosubplace/krx_eval:0.2.0       "bash"    2 minutes ago   Up 2 minutes             unruffled_heyrovsky
+17e399a8e7ca   twosubplace/krx_lm_train:0.3.0   "bash"    3 days ago      Up 22 hours              funny_kepler
+```
+
+- attach to container
+```
+docker attach 9cc37bd809c2
+```
